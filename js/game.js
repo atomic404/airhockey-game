@@ -1,23 +1,27 @@
-let line1, line2, ball;
+let line1, line2, ball, currentSpeed;
 let point1 = 0;
 let point2 = 0;
-let diffSpeed = 1;
-let diffSize = 1;
+
+function speed(speed) {
+    this.speed = speed;
+};
 
 function startGame(difficulty) {
-    gameCanvas.start();
+    let diffSize = 1;
+
     if (difficulty == 'easy') {
         diffSize = 50;
-        diffSpeed = 5;
+        currentSpeed = new speed(10)
     }
     if (difficulty == 'normal') {
         diffSize = 40;
-        diffSpeed = 6;
+        currentSpeed = new speed(12)
     }
     if (difficulty == 'hard') {
         diffSize = 30;
-        diffSpeed = 10;
+        currentSpeed = new speed(15)
     }
+    gameCanvas.start();
     document.getElementById('diff').style.display = 'none';
 
     line1 = new canvasComponent(8, diffSize, "white", 20, 150);
@@ -106,28 +110,28 @@ function updateGameArea() {
     }
     // # Keyboard Checker
     if (gameCanvas.keys && gameCanvas.keys[87]) {
-        line1.y -= diffSpeed;
+        line1.y -= currentSpeed.speed;
         if (ball.isGoingToCrash(line1)) {
             ball.speedY = -4;
             ball.speedX = 14;
         }
     }
     if (gameCanvas.keys && gameCanvas.keys[83]) {
-        line1.y += diffSpeed;
+        line1.y += currentSpeed.speed;
         if (ball.isGoingToCrash(line1)) {
             ball.speedY = 4;
             ball.speedX = 14;
         }
     }
     if (gameCanvas.keys && gameCanvas.keys[38]) {
-        line2.y -= diffSpeed;
+        line2.y -= currentSpeed.speed;
         if (ball.isGoingToCrash(line2)) {
             ball.speedY = -4;
             ball.speedX = -8;
         }
     }
     if (gameCanvas.keys && gameCanvas.keys[40]) {
-        line2.y += diffSpeed;
+        line2.y += currentSpeed.speed;
         if (ball.isGoingToCrash(line2)) {
             ball.speedY = 4;
             ball.speedX = -8;
@@ -137,10 +141,10 @@ function updateGameArea() {
     ball.newPos();
     if (ball.isGoingToCrash(line1)) {
         ball.speedY = 0;
-        ball.speedX = diffSpeed;
+        ball.speedX = currentSpeed.speed;
     } else if (ball.isGoingToCrash(line2)) {
         ball.speedY = 0;
-        ball.speedX = -diffSpeed;
+        ball.speedX = -8;
     } else {
         ball.x += -4;
     }
